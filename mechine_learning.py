@@ -1,21 +1,34 @@
-masukan = input().lower()
-with open("dataset.txt", "r") as n:
-  dataset = [line.strip() for line in n ]
-cek = masukan.split()
+from ddgs import DDGS 
 
-ada = False
+masukan = input().lower().split()
+l_list = []
+r_list = []
 
-for x in cek:
-  if x in dataset:
-    print(x)
-    ada = True
+with open("dataset.txt", "r") as items:
+    for i in items:
+        i = i.strip()
+        if i:
+          if "," in i:
+            l, r = i.split(",", 1)
+            l_list.append(l.strip())
+            r_list.append(r.strip())
 
+for x in masukan:
+      if x in  l_list:
+        index = l_list.index(x)
+        print(l_list[index])
+        print(r_list[index])
+      else: 
+        link = []
+        with DDGS() as ddgs:
+            hasil = ddgs.text(x, max_results=5)
+            for url in hasil:
+                temp = url["href"]
+                link.append(temp)
+                print(temp)
 
-if not ada :
-  tambah = input("tambah kategori: ").lower()
-  with open("dataset.txt", "a") as n:
-    n.write(tambah + "\n")
-  print('data ditambahkan') 
-      
 
     
+
+
+

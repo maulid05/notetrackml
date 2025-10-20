@@ -1,9 +1,10 @@
-python
-java
-html
-css
-web
-javascript
-flutter
-laravel
+python,bahasa pemrograman
+java,bahasa pemrograman
+html,web developer
+css,web developer
+web,developer
+javascript,bahasa pemrograman
+flutter,framework
+laravel,framework
+
 
