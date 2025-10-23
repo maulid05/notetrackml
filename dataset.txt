@@ -1,10 +1,10 @@
 python,bahasa pemrograman
-java,bahasa pemrograman
-html,web developer
-css,web developer
-web,developer
+java,bahasa
 javascript,bahasa pemrograman
 flutter,framework
 laravel,framework
-
-
+html,web
+,programming
+,languange
+,html
+,development
