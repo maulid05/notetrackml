@@ -1,70 +1,44 @@
-from ddgs import DDGS 
+from ddgs import DDGS
 from deep_translator import GoogleTranslator
+from collections import Counter
 
-def ddgs_handler(items):
-    
-        x = items
-        with DDGS() as ddgs:
-            hasil = ddgs.text(x, max_results=5)
-            for url in hasil:
-                temp = url["body"]
-                deepsearch(x, temp, l_list, r_list)
+def deepsearch(query):
+    print("============ " + query + " =========")
+    save = {}
 
+    with DDGS() as ddgs:
+        result = list(ddgs.text(query, max_results=5))
 
-def deepsearch(kata, kategori, l_ist, r_list):
-  temp = kategori.split()
-  
-  list = []
-  with open("temp.txt", "r")as f:
-    for i in f:
-      list.append(i)       
-  
-  for x0 in temp:
-    if x0 in r_list:
-      print(x0)
-      for x1 in temp:
-        if x1 != x0 :
-          tempsave(x1)
-          if x1 in list:
-            print(x0, x1)
-          elif x1 in list :
-            print(x0, x1)
-          ddgs_handler(x1)
+    for i, item in enumerate(result, 1):
+        print()
+        body = item.get("body", "")
+        potong = " ".join(body.split())
+        output = GoogleTranslator(source='auto', target='id').translate(potong.lower())
+        save[i] = output
+    bahan(query, save)
+     
+def bahan(masukan, save):
+    teks_list = list(save.values())
 
-def tempsave(data):
-  with open('temp.txt', 'w', encoding='utf-8')as f:
-    for item in data:
-      f.write(*item)
+    semua_kata = []
+    for teks in teks_list:
+        semua_kata.extend(teks.split())
 
-def datasave(x, kategori):
-    
-        
-                            
-masukan = input().lower().split()
-l_list = []
-r_list = []
+    nout = Counter(semua_kata)
 
-with open("dataset.txt", "r") as items:
-    for i in items:
-        i = i.strip()
-        if i:
-          if "," in i:
-            l, r = i.split(",", 1)
-            l_list.append(l.strip())
-            r_list.append(r.strip())
+    finalsearch(masukan, nout.most_common(10))
 
-for x in masukan:
-      if x in  l_list:
-        index = l_list.index(x)
-        print(l_list[index])
-        print(r_list[index])
-      else:
-        ddgs_handler(x)
-                
-                
+def finalsearch(masukan, bahan):
+    print(masukan + " = " + str(bahan))
 
 
-    
+masukan = input("tanya ddgs: ").lower().split()
+index = len(masukan)
 
-
-
+for i in range(index - 1):
+    deepsearch(masukan[i])
+    deepsearch(masukan[i+1])
+    for n in range(index -1):
+        if masukan[i] != masukan[n+1]:
+            cari = masukan[i]+ " " + masukan[n+1]
+            deepsearch(cari)
